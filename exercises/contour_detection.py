@@ -69,7 +69,8 @@ def contour_detection(image_path):
         img_contours = img.copy()
         cv2.drawContours(img_contours, contours, -1, (0, 255, 0), 2)
         print(f"成功绘制{len(contours)}个轮廓")
-        
+        if isinstance(contours, list):
+            print(f"轮廓列表长度: {len(contours)}")
         return img_contours, list(contours)
         
     except Exception as e:
