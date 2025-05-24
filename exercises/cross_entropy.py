@@ -33,4 +33,17 @@ def cross_entropy_loss(y_true, y_pred):
     # 4. 计算交叉熵损失：L = - sum(y_true * log(y_pred))。
     #    在 NumPy 中是 -np.sum(y_true * np.log(y_pred))。
     # 5. 计算所有样本的平均损失：L / N。
-    pass 
+    # 获取样本数量和类别数量
+    N = y_pred.shape[0]
+    C = y_pred.shape[1] if len(y_pred.shape) > 1 else 1
+    
+    # 如果y_true是类别索引，转换为独热编码
+    if len(y_true.shape) == 1 or y_true.shape[1] == 1:
+        y_true = np.eye(C)[y_true.astype(int)]
+    
+    # 防止log(0)错误
+    y_pred = np.clip(y_pred, 1e-12, 1.0)
+    
+    # 计算交叉熵损失
+    loss = -np.sum(y_true * np.log(y_pred)) / N
+    return loss
