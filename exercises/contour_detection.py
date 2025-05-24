@@ -33,20 +33,30 @@ def contour_detection(image_path):
         # 读取图像
         img = cv2.imread(image_path)
         if img is None:
+            print(f"无法读取图像: {image_path}")
             return None, None
+            
+        print(f"成功读取图像，尺寸: {img.shape}")
             
         # 转为灰度图
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        print("灰度转换完成")
         
         # 二值化处理
         _, binary = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
+        print("二值化完成")
         
-        # 检测轮廓(兼容OpenCV 3.x和4.x)
+        # 检测轮廓(OpenCV 4.x版本)
         contours, _ = cv2.findContours(binary, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        print(f"检测到{len(contours)}个轮廓 (使用OpenCV {cv2.__version__})")
+        
+        if len(contours) == 0:
+            print("警告: 未检测到任何轮廓")
         
         # 创建副本并绘制轮廓
         img_contours = img.copy()
         cv2.drawContours(img_contours, contours, -1, (0, 255, 0), 2)
+        print("轮廓绘制完成")
         
         return img_contours, contours
         
