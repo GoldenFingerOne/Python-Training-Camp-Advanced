@@ -70,7 +70,7 @@ def contour_detection(image_path):
         cv2.drawContours(img_contours, contours, -1, (0, 255, 0), 2)
         print(f"成功绘制{len(contours)}个轮廓")
         
-        return img_contours, contours
+        return img_contours, list(contours)
         
     except Exception as e:
         print(f"Error in contour detection: {e}")
